@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcbx0su6pc1dn"]
+
+[ext_resource type="Script" path="res://Scenes/Interactables/Button/BaseButton.gd" id="1_isdsx"]
+[ext_resource type="Texture2D" uid="uid://dwcn5pi03p4qd" path="res://Assets/Objects/Button.png" id="2_180q1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mgab6"]
+size = Vector2(34, 34)
+
+[node name="BaseButton" type="Area2D"]
+collision_mask = 7
+script = ExtResource("1_isdsx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(20, -40)
+texture = ExtResource("2_180q1")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(20, -20)
+shape = SubResource("RectangleShape2D_mgab6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

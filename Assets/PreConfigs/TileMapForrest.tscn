@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://wg4jw264264v"]
+
+[ext_resource type="TileSet" uid="uid://66hugx5k8f28" path="res://Assets/PreConfigs/TileSetForrest.tres" id="1_kh7lb"]
+
+[node name="TileMapForrest" type="TileMap"]
+tile_set = ExtResource("1_kh7lb")
+cell_quadrant_size = 40
+format = 2

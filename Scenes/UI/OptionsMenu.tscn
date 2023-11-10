@@ -1,0 +1,235 @@
+[gd_scene load_steps=2 format=3 uid="uid://lghwc6avsyae"]
+
+[sub_resource type="GDScript" id="GDScript_wluf0"]
+resource_name = "OptionsMenu"
+script/source = "extends CanvasLayer
+
+var language
+
+var fullscreen
+var window_size
+
+var master_volume
+var music_volume
+var sfx_volume
+
+
+
+
+func load_config():
+	
+	#load Video
+	fullscreen = CONFIG.fullscreen
+	%CheckBoxFullscreen.button_pressed = fullscreen
+	_on_check_box_fullscreen_toggled(fullscreen)
+	window_size = CONFIG.window_size
+	%OButtonWindowSize.selected = window_size
+	_on_o_button_window_size_item_selected(window_size)
+	
+	#load Volume
+	master_volume = CONFIG.master_volume
+	%MasterVolumeSlider.value = master_volume
+	music_volume = CONFIG.music_volume
+	%MusicVolumeSlider.value = music_volume
+	sfx_volume = CONFIG.sfx_volume
+	%SFXVolumeSlider.value = sfx_volume
+	
+	#Load Language if already set, else Systemlanguage (english if not available)
+	language = CONFIG.language
+	if language != \"\":
+		TranslationServer.set_locale(language)
+	else:
+		pass
+	
+	var current_language = TranslationServer.get_locale()
+	if current_language == \"de_DE\":
+		%ButtonGerman.button_pressed = true
+	elif current_language == \"en_EN\":
+		%ButtonEnglish.button_pressed = true
+	else:
+		%ButtonEnglish.button_pressed = true
+
+
+func _on_check_box_fullscreen_toggled(button_pressed):
+	if button_pressed == true:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		%OButtonWindowSize.disabled = true
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		%OButtonWindowSize.disabled = false
+
+
+func _on_o_button_window_size_item_selected(index):
+	if index == 0:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(640,360))
+		DisplayServer.window_set_position(DisplayServer.screen_get_size()/2 - DisplayServer.window_get_size()/2)
+	elif index == 1:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(1280,720))
+		DisplayServer.window_set_position(DisplayServer.screen_get_size()/2 - DisplayServer.window_get_size()/2)
+
+
+func _on_master_volume_slider_value_changed(value):
+	AudioServer.set_bus_volume_db(0,linear_to_db(value))
+	master_volume = value
+
+
+func _on_music_volume_slider_value_changed(value):
+	AudioServer.set_bus_volume_db(1,linear_to_db(value))
+	music_volume = value
+
+
+func _on_sfx_volume_slider_value_changed(value):
+	AudioServer.set_bus_volume_db(2,linear_to_db(value))
+	sfx_volume = value
+
+
+func _on_button_english_pressed():
+	CONFIG.language = \"en\"
+	TranslationServer.set_locale(\"en\")
+
+
+func _on_button_german_pressed():
+	CONFIG.language = \"de\"
+	TranslationServer.set_locale(\"de\")
+
+
+func _on_button_save_config_pressed():
+	CONFIG.master_volume = master_volume
+	CONFIG.music_volume = music_volume
+	CONFIG.sfx_volume = sfx_volume
+	
+	#need script for save CONFIG data
+
+
+func _on_button_close_pressed():
+	# Disabled till Saving is ready | load_config() #reset unsaved changes
+	visible = false
+"
+
+[node name="OptionsMenu" type="CanvasLayer"]
+layer = 3
+script = SubResource("GDScript_wluf0")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxFullscreen" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxFullscreen"]
+layout_mode = 2
+text = "FULLSCREEN"
+
+[node name="CheckBoxFullscreen" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxFullscreen"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxWindowSize" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxWindowSize"]
+layout_mode = 2
+text = "WINDOW_SIZE"
+
+[node name="OButtonWindowSize" type="OptionButton" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxWindowSize"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = " 640 x 360"
+popup/item_0/id = 0
+popup/item_1/text = "1280 x 720"
+popup/item_1/id = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MasterVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "MASTER_VOLUME"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MusicVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "MUSIC_VOLUME"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="SFXVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "SFX_VOLUME"
+
+[node name="SFXVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LanguageContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonEnglish" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EN"
+
+[node name="ButtonGerman" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DE"
+
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FooterContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonSaveConfig" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FooterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SAVE"
+
+[node name="ButtonClose" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FooterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CLOSE"
+
+[connection signal="toggled" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxFullscreen/CheckBoxFullscreen" to="." method="_on_check_box_fullscreen_toggled"]
+[connection signal="item_selected" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxWindowSize/OButtonWindowSize" to="." method="_on_o_button_window_size_item_selected"]
+[connection signal="value_changed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageContainer/ButtonEnglish" to="." method="_on_button_english_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageContainer/ButtonGerman" to="." method="_on_button_german_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FooterContainer/ButtonSaveConfig" to="." method="_on_button_save_config_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FooterContainer/ButtonClose" to="." method="_on_button_close_pressed"]

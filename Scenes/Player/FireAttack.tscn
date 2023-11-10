@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6hdqhworosai"]
+
+[ext_resource type="Script" path="res://Scenes/Player/FireAttack.gd" id="1_78afn"]
+[ext_resource type="Texture2D" uid="uid://d015drteklvtv" path="res://Assets/Effects/Fireball.png" id="2_kq454"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shkw2"]
+radius = 8.0
+
+[node name="FireAttack" type="Area2D"]
+collision_layer = 8
+collision_mask = 37
+script = ExtResource("1_78afn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4, -4)
+texture = ExtResource("2_kq454")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_shkw2")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

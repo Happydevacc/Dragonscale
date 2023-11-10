@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtedhra6tp68y"]
+
+[ext_resource type="Script" path="res://Scenes/Enemys/Enemy.gd" id="1_f4ojy"]
+[ext_resource type="Texture2D" uid="uid://bb6iqpc8ogdet" path="res://icon.svg" id="2_0vfy6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8momc"]
+size = Vector2(128, 128)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fujcs"]
+radius = 135.133
+
+[node name="BaseEnemy" type="CharacterBody2D"]
+collision_layer = 36
+collision_mask = 3
+script = ExtResource("1_f4ojy")
+
+[node name="Icon" type="Sprite2D" parent="."]
+texture = ExtResource("2_0vfy6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8momc")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_fujcs")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]

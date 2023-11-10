@@ -1,0 +1,123 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwjp13mnlvpvq"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Player.gd" id="1_7w3xr"]
+[ext_resource type="Texture2D" uid="uid://b1q6w5oqwfeog" path="res://Assets/Creatures/DragonSpritesLeft.png" id="2_wlxmx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aubnh"]
+size = Vector2(34, 25)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2h3hv"]
+radius = 4.0
+height = 38.0
+
+[sub_resource type="Animation" id="Animation_2tmcb"]
+resource_name = "Fireball"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [12]
+}
+
+[sub_resource type="Animation" id="Animation_tu2f3"]
+resource_name = "Idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_pufal"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_dba6r"]
+resource_name = "Walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [8, 9]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3b86t"]
+_data = {
+"AttackFireball": SubResource("Animation_2tmcb"),
+"Idle": SubResource("Animation_tu2f3"),
+"RESET": SubResource("Animation_pufal"),
+"Walk": SubResource("Animation_dba6r")
+}
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation_player", "camera", "raycast_interactable")]
+collision_layer = 2
+collision_mask = 21
+script = ExtResource("1_7w3xr")
+animation_player = NodePath("AnimationPlayer")
+camera = NodePath("Camera2D")
+raycast_interactable = NodePath("RayCast2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -13)
+texture = ExtResource("2_wlxmx")
+hframes = 4
+vframes = 15
+frame = 4
+
+[node name="Hurtbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_aubnh")
+
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_2h3hv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3b86t")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 117)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

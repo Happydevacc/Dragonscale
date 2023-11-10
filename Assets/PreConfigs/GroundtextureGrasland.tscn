@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://xnis0ph521op"]
+
+[ext_resource type="Texture2D" uid="uid://c1gp37dexc06t" path="res://Assets/Landscape/Grasland.png" id="1_sc8x6"]
+
+[node name="GroundtextureGrasland" type="ParallaxBackground"]
+layer = 0
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+motion_mirroring = Vector2(1280, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer"]
+texture = ExtResource("1_sc8x6")

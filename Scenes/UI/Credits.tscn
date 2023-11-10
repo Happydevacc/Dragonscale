@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccprsrihhf8w"]
+
+[sub_resource type="GDScript" id="GDScript_xr53v"]
+resource_name = "Credits"
+script/source = "extends CanvasLayer
+
+
+func _on_button_close_pressed():
+	visible = false
+"
+
+[node name="Credits" type="CanvasLayer"]
+layer = 2
+script = SubResource("GDScript_xr53v")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Project Lead
+Programming"
+
+[node name="Label2" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Kevin \"HappyDev\" Stuhlmiller"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Art and UI"
+
+[node name="Label4" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Marcel \"Celliniho\" Weiss"
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Music and Soundeffects"
+
+[node name="Label6" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mettlesmith"
+
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Concept Arts"
+
+[node name="Label8" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Ducky"
+
+[node name="HSeparator4" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonClose" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Thank you for reading"
+
+[connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/ButtonClose" to="." method="_on_button_close_pressed"]

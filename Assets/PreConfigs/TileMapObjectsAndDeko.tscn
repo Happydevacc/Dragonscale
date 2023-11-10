@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bf6xg8i7utnuw"]
+
+[ext_resource type="TileSet" uid="uid://diublp3c57c82" path="res://Assets/PreConfigs/TileSetObjectsAndDeko.tres" id="1_qf842"]
+
+[node name="TileMapObjectsAndDeko" type="TileMap"]
+tile_set = ExtResource("1_qf842")
+cell_quadrant_size = 40
+format = 2

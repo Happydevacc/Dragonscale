@@ -1,0 +1,13 @@
+keys,en,de
+PLAY,Play,Spielen
+C_PLAY,PLAY,SPIELEN
+OPTIONS,Options,Optionen
+C_OPTIONS,OPTIONS,OPTIONEN
+CREDITS,Credits,Credits
+C_CREDITS,CREDITS,CREDITS
+EXIT,Exit,Beenden
+C_EXIT,EXIT,BEENDEN
+,,
+MASTER_VOLUME,Master Volume,Gesamtlautstärke
+MUSIC_VOLUME,Music Volume,Musiklautstärke
+SFX_VOLUME,SFX Volume,Effektlautstärke
